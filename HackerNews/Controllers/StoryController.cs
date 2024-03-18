@@ -1,5 +1,4 @@
 using HackerNews.Interfaces;
-using HackerNews.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HackerNews.Controllers
@@ -19,7 +18,7 @@ namespace HackerNews.Controllers
 
         [HttpGet]
         [Route("[action]/{number?}")]
-        public async Task<ActionResult<IEnumerable<Story>>> GetBestStoriesAsync(CancellationToken cancellationToken, int? number = null)
+        public async Task<IActionResult> GetBestStoriesAsync(CancellationToken cancellationToken, int? number = null)
         {
             try
             {

@@ -1,5 +1,4 @@
-﻿
-using HackerNews.Mappers;
+﻿using HackerNews.Mappers;
 using HackerNews.Models;
 
 namespace HackerNewsTests
@@ -20,6 +19,18 @@ namespace HackerNewsTests
                 Type = "story",
                 Url = "http=//www.mytests.com/mystory.html"
             };
+        }
+
+        internal static List<int> GetTestStoryIds()
+        {
+            var storyIds = new List<int>();
+
+            for (var i = 0; i < 200; i++)
+            {
+                storyIds.Add(i);
+            }
+
+            return storyIds;
         }
 
         internal static List<Story> GetTestStories()
