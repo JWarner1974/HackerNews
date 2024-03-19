@@ -7,6 +7,8 @@ using Microsoft.Extensions.Options;
 using HackerNews.Models;
 using Moq.Protected;
 using Newtonsoft.Json;
+using System;
+using Microsoft.AspNetCore.Hosting.StaticWebAssets;
 
 namespace HackerNewsTests
 {
@@ -35,6 +37,25 @@ namespace HackerNewsTests
 
             cacheMock.Verify(x => x.TryGetValue(It.IsAny<object>(), out It.Ref<object?>.IsAny), Times.Exactly(cacheCalls));
             httpClientFactoryMock.Verify(x => x.CreateClient(Options.DefaultName), Times.Exactly(httpCalls));
+        }
+
+        [Test]
+        public async Task When_stories_returned_they_are_sorted_by_score()
+        {
+            var httpClientFactoryMock = GetMockHttpClientFactory();
+            var loggerMock = GetMockLogger();
+            var cacheMock = GetMockMemoryCache(true);
+            var configMock = GetMockCacheConfig();
+            var num = 10;
+
+            var service = new HackerNewsService(httpClientFactoryMock.Object, loggerMock.Object, cacheMock.Object, configMock.Object);
+
+            var stories = (await service.GetBestStories(num, CancellationToken.None)).ToList();
+
+            for (var i = 0; i < num - 1; i++)
+            {
+                Assert.That(stories[i].Score <= stories[i + 1].Score);
+            }
         }
 
         private Mock<HttpMessageHandler> GetMockMessageHandler()

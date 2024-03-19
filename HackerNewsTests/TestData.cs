@@ -41,6 +41,7 @@ namespace HackerNewsTests
             {
                 var story = GetTestHackerStory().ToStory();
                 story.Title = $"Some title {i}";
+                story.Score = (i + 1) * 10;
                 stories.Add(story);
             }
 
